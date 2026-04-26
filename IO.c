@@ -1,6 +1,7 @@
 //
 // Created by clt2-lamptey on 21/04/2026.
 //
+#include <string.h>
 #include <stdlib.h>
 #include <stdio.h>
 #include "waveform.h"
@@ -9,6 +10,9 @@ Sample *COLLECT(char *CSVFILE) {
     //Variables
     char line [1001];
     int count = 0;
+    char* string;
+    char s;
+    char header_checker = "f";
 
 
 
@@ -25,15 +29,31 @@ Sample *COLLECT(char *CSVFILE) {
         return NULL;
     }
 
-    fgets(line, 66, fptr);
+    fgets(line, 100, fptr);
 
-    while (fgets(line, sizeof(line), fptr) && count < 1001) {
-        sscanf(line, "%lf,%lf,%lf,%lf",
+    while (fgets(line, sizeof(line), fptr)) {
+
+        sscanf(line,"%c", &s);
+        if (strstr(s, header_checker) != NULL) {
+            fgets(line, 100, fptr);
+            count = 0;
+            while (fgets(line, sizeof(line), fptr)) {
+
+                sscanf(line, "%lf, %lf, %lf",
+                       &data[count].frequency,
+                       &data[count].pFactor,
+                       &data[count].THD);
+                count++;
+            }
+            fclose(fptr);
+        }
+
+        sscanf(line, "%lf, %lf, %lf, %lf, %lf",
         &data[count].timestamp,
         &data[count].Va,
         &data[count].Vb,
         &data[count].Vc,
-        &data[count].current,
+        &data[count].current
         );
 
         count++;
