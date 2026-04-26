@@ -8,15 +8,12 @@
 Sample *COLLECT(char *CSVFILE) {
 
     //Variables
-    char line [1001];
+    char line [1000];
     int count = 0;
-    char* string;
-    char s;
-    char header_checker = "f";
-
-
+    printf("0\n");
 
     FILE *fptr = fopen(CSVFILE, "r");
+
     if (fptr == NULL) {
         printf("The file could not be opened");
         return NULL;
@@ -29,39 +26,27 @@ Sample *COLLECT(char *CSVFILE) {
         return NULL;
     }
 
-    fgets(line, 100, fptr);
+    fgets(line, sizeof(line), fptr);
+    printf("1\n");
+    while (count <= 999) {
 
-    while (fgets(line, sizeof(line), fptr)) {
+        fgets(line, sizeof(line), fptr );
 
-        sscanf(line,"%c", &s);
-        if (strstr(s, header_checker) != NULL) {
-            fgets(line, 100, fptr);
-            count = 0;
-            while (fgets(line, sizeof(line), fptr)) {
-
-                sscanf(line, "%lf, %lf, %lf",
-                       &data[count].frequency,
-                       &data[count].pFactor,
-                       &data[count].THD);
-                count++;
-            }
-            fclose(fptr);
-        }
-
-        sscanf(line, "%lf, %lf, %lf, %lf, %lf",
+        sscanf(line, "%lf, %lf, %lf, %lf, %lf, %lf, %lf, %lf",
         &data[count].timestamp,
         &data[count].Va,
         &data[count].Vb,
         &data[count].Vc,
-        &data[count].current
+        &data[count].current,
+        &data[count].frequency,
+        &data[count].pFactor,
+        &data[count].THD
         );
-
         count++;
-
     }
 
-
     fclose(fptr);
+    return data;
 
 
 }
