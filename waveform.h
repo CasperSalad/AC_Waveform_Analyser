@@ -14,5 +14,13 @@ typedef struct {
     double pFactor;
     double THD;
 } Sample;
+
+typedef struct {
+    double Va_RMS;
+    double Vb_RMS;
+    double Vc_RMS;
+} Calculations;
+
+Calculations Data_Set;
 #endif //WAVEFORM_ANALYSER_CODE_WAVEFORM_H
 

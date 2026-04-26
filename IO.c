@@ -10,7 +10,6 @@ Sample *COLLECT(char *CSVFILE) {
     //Variables
     char line [1000];
     int count = 0;
-    printf("0\n");
 
     FILE *fptr = fopen(CSVFILE, "r");
 
@@ -47,6 +46,4 @@ Sample *COLLECT(char *CSVFILE) {
 
     fclose(fptr);
     return data;
-
-
 }
