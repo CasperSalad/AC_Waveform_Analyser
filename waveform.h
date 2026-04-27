@@ -16,15 +16,17 @@ typedef struct {
 } Sample;
 
 typedef struct {
-    double Va_RMS;
-    double Vb_RMS;
-    double Vc_RMS;
-    double Va_PEAK2PEAK;
-    double Vb_PEAK2PEAK;
-    double Vc_PEAK2PEAK;
+    double MEAN;
+    double RMS;
+    int RMS_Status;
+    double PEAK2PEAK;
+    double CLIPPINGS_TS[20];
+    double CLIPPINGS [20];
 } Calculations;
 
-Calculations Data_Set;
+Calculations Va;
+Calculations Vb;
+Calculations Vc;
 Calculations RMS(Sample *data);
 #endif //WAVEFORM_ANALYSER_CODE_WAVEFORM_H
 
