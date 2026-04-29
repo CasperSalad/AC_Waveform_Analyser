@@ -25,11 +25,12 @@ Sample *COLLECT(char *CSVFILE) {
         return NULL;
     }
 
-    fgets(line, sizeof(line), fptr);
+    fgets(line, 100, fptr);
+
     printf("1\n");
     while (count <= 999) {
 
-        fgets(line, sizeof(line), fptr );
+        fgets(line, 100, fptr );
 
         sscanf(line, "%lf, %lf, %lf, %lf, %lf, %lf, %lf, %lf",
         &data[count].timestamp,
@@ -46,4 +47,18 @@ Sample *COLLECT(char *CSVFILE) {
 
     fclose(fptr);
     return data;
+}
+
+void RESULTS(char *File_Name, phase[3])  {
+    FILE *fptr = fopen("results.txt", "w");
+
+    if (fptr == NULL) {
+        printf("Unable to create Results File");
+        return;
+    }
+    fprintf("           3 Phase AC waveform Analysis Program - Casper Lamptey"\n);
+    fprintf("------------------------------------------------------------------------------\n");
+
+
+
 }

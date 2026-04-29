@@ -6,7 +6,11 @@
 #include <stdio.h>
 #include <math.h>
 #include "waveform.h"
-Calculations RMS(Sample *data) {
+Calculations RMS(Sample *data, int n) {
+
+    Phase[0].name = "a";
+    Phase[1].name = "b";
+    Phase[2].name = "c";
 
     double Va_SUM;
     double Vb_SUM;
@@ -16,7 +20,7 @@ Calculations RMS(Sample *data) {
     double Vb_SUM2;
     double Vc_SUM2;
     int count;
-    for (int i = 0; i < 999; i++) {
+    for (int i = 0; i < n; i++) {
         Va_SUM = Va_SUM + data[i]. Va;
         Vb_SUM = Vb_SUM + data[i]. Vb;
         Vc_SUM = Vc_SUM + data[i]. Vc;
@@ -26,23 +30,31 @@ Calculations RMS(Sample *data) {
         Vc_SUM2 = Vc_SUM2 + pow(data[i]. Vc, 2);
     }
 
-    Va.MEAN = Va_SUM /1000;
-    Vb.MEAN = Vb_SUM /1000;
-    Vc.MEAN = Vc_SUM /1000;
-    Va.RMS = sqrt(Va_SUM2 /1000);
-    Vb.RMS = sqrt(Vb_SUM2 /1000);
-    Vc.RMS = sqrt(Vc_SUM2 /1000);
+    Phase[0].MEAN = Va_SUM /n;
+    Phase[1].MEAN = Vb_SUM /n;
+    Phase[2].MEAN = Vc_SUM /n;
+    Phase[0].RMS = sqrt(Va_SUM2 /n);
+    Phase[1.RMS = sqrt(Vb_SUM2 /n);
+    Phase[2].RMS = sqrt(Vc_SUM2 /n);
 
-    if (Va.RMS < 207) Va.RMS_Status = 0;
-    if (Vb.RMS < 207) Vb.RMS_Status = 0;
-    if (Vc.RMS < 207) Vc.RMS_Status = 0;
-
-    if (Va.RMS > 253) Va.RMS_Status = 2;
-    if (Vb.RMS > 253) Vb.RMS_Status = 2;
-    if (Vc.RMS > 253) Vc.RMS_Status = 2;
 }
 
-Calculations Peak2Peak(Sample *data) {
+Calculations RMS_Compliance(double nominal, double RMS) {
+
+    double upper = RMS + RMS * (nominal/100);
+    double lower = RMS - RMS * (nominal/100);
+
+    if (Phase[0].RMS < lower) Phase[0].RMS_Status = 0;
+    if (Phase[1].RMS < lower) Phase[1].RMS_Status = 0;
+    if (Phase[2].RMS < lower) Phase[2].RMS_Status = 0;
+
+    if (Phase[0].RMS > upper) Phase[0].RMS_Status = 2;
+    if (Phase[1].RMS > upper) Phase[1].RMS_Status = 2;
+    if (Phase[2].RMS > upper) Phase[2].RMS_Status = 2;
+
+}
+
+Calculations Peak2Peak(Sample *data, int n) {
 
     double Va_MAX;
     double Va_MIN;
@@ -51,7 +63,7 @@ Calculations Peak2Peak(Sample *data) {
     double Vc_MAX;
     double Vc_MIN;
 
-    for (int i = 0; i < 999; i++) {
+    for (int i = 0; i < n; i++) {
         if (data[i].Va > Va_MAX) Va_MAX = data[i].Va;
         if (data[i].Va < Va_MIN) Va_MIN = data[i].Va;
 
@@ -61,32 +73,63 @@ Calculations Peak2Peak(Sample *data) {
         if (data[i].Vc > Vc_MAX) Vc_MAX = data[i].Vc;
         if (data[i].Vc < Vc_MIN) Vc_MIN = data[i].Vc;
     }
-    Va.PEAK2PEAK = Va_MAX - Va_MIN;
-    Vb.PEAK2PEAK = Vb_MAX - Vb_MIN;
-    Vc.PEAK2PEAK = Vc_MAX - Vc_MIN;
+    Phase[0].PEAK2PEAK = Va_MAX - Va_MIN;
+    Phase[1].PEAK2PEAK = Vb_MAX - Vb_MIN;
+    Phase[2].PEAK2PEAK = Vc_MAX - Vc_MIN;
 
 }
 
-Calculations Clippings(Sample *data) {
+Calculations Clippings(Sample *data, int n, double limit) {
     int count;
-    for (int i = 0; i < 999; i++) {
-        if (data[i].Va >= 324.9) {
+    for (int i = 0; i < n; i++) {
+        if (data[i].Va >= limit) {
 
-            Va.CLIPPINGS_TS[count] = data[i].timestamp;
-            Va.CLIPPINGS[count] = data[i].Va;
+            Phase[0].CLIPPINGS_TS[count] = data[i].timestamp;
+            Phase[0].CLIPPINGS[count] = data[i].Va;
             count++;
         }
-        if (data[i].Vb >= 324.9) {
+        if (data[i].Vb >= limit) {
 
-            Vb.CLIPPINGS_TS[count] = data[i].timestamp;
-            Vb.CLIPPINGS[count] = data[i].Vb;
+            Phase[1].CLIPPINGS_TS[count] = data[i].timestamp;
+            Phase[1].CLIPPINGS[count] = data[i].Vb;
             count++;
         }
-        if (data[i].Vc >= 324.9) {
+        if (data[i].Vc >= limit) {
 
-            Vc.CLIPPINGS_TS[count] = data[i].timestamp;
-            Vc.CLIPPINGS[count] = data[i].Vc;
+            Phase[2].CLIPPINGS_TS[count] = data[i].timestamp;
+            Phase[2].CLIPPINGS[count] = data[i].Vc;
             count++;
         }
     }
+}
+
+Sample *THD_Percent (Sample *data, int n) {
+
+    double THD_SUM;
+    for (int i = 0; i < n; i++) {
+        THD_SUM = THD_SUM + data[i].THD;
+    }
+    THD_Average = THD_SUM / n;
+
+
+}
+Sample *Power_Factor (Sample *data, int n) {
+
+    double Pfactor_SUM;
+    for (int i = 0; i < n; i++) {
+        Pfactor_SUM = Pfactor_SUM + data[i].THD;
+    }
+    Pfactor_Average = Pfactor_SUM / n;
+
+
+}
+Sample *Frequency (Sample *data, int n) {
+
+    double Frequency_SUM;
+    for (int i = 0; i < n; i++) {
+        Frequency_SUM = Frequency_SUM + data[i].THD;
+    }
+    Frequency_Average = Frequency_SUM / n;
+
+
 }

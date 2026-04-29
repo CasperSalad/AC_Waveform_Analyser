@@ -14,15 +14,18 @@ Sample *data = COLLECT(FileName);
 
 if (data != NULL) {
 
-    printf("timestamp: %lf\n", data[0].timestamp);
-    printf("Va: %lf\n", data[0].Va);
-    printf("Vb: %lf\n", data[0].Vb);
-    printf("Vc: %lf\n", data[0].Vc);
-    printf("current: %lf\n", data[0].current);
-    printf("frequency: %lf\n", data[0].frequency);
-    printf("pFactor: %lf\n", data[0].pFactor);
-    printf("THD : %lf\n", data[0].THD);
-    free(data);
+    RMS(data, 1000);
+    RMS_Compliance(10, 230);
+    Peak2Peak(data, 1000);
+    Clippings(data,  1000, 324.9);
+    THD_Percent(data,  1000);
+    Power_Factor(data,  1000);
+    Frequency(data,  1000);
+
+
+
+
+
 } else {
     printf("\nFAILED");
 }
