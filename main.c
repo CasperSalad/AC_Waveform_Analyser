@@ -5,6 +5,10 @@
 #include "waveform.h"
 int main() {
 
+    Phase[0].RMS_Status = 1;
+    Phase[1].RMS_Status = 1;
+    Phase[2].RMS_Status = 1;
+
     char FileName[50];
 
     printf("3 phase AC Waveform Power Analyser by Casper Lamptey\n\nEnter File Name:");
@@ -21,10 +25,6 @@ if (data != NULL) {
     THD_Percent(data,  1000);
     Power_Factor(data,  1000);
     Frequency(data,  1000);
-
-
-
-
 
 } else {
     printf("\nFAILED");

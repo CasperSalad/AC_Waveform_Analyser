@@ -50,6 +50,9 @@ Sample *COLLECT(char *CSVFILE) {
 }
 
 void RESULTS(char *File_Name, phase[3])  {
+
+    int count = 0;
+
     FILE *fptr = fopen("results.txt", "w");
 
     if (fptr == NULL) {
@@ -58,6 +61,33 @@ void RESULTS(char *File_Name, phase[3])  {
     }
     fprintf("           3 Phase AC waveform Analysis Program - Casper Lamptey"\n);
     fprintf("------------------------------------------------------------------------------\n");
+    for (int i = 0; i < 3; i++) {
+
+        fprintf("Calculations for V%c\n", Phase[i].name);
+        fprintf("RMS : %lf      ", Phase[i].name);
+
+        if (Phase[i].RMS_Status == 0) fprintf("RMS is below the nominal interval.\n");
+        if (Phase[i].RMS_Status == 1) fprintf("RMS is within the nominal interval.\n");
+        if (Phase[i].RMS_Status == 2) fprintf("RMS is above the nominal interval.\n");
+
+        fprintf("Peak to Peak Value : %lf\n", Phase[i].PEAK2PEAK);
+
+
+        fprintf("V%c Voltage Clippings list:\n\n ")
+
+        while (Phase[i].CLIPPINGS != 0) {
+            fprintf("%lf     ------->      %lf\n", Phase[i].CLIPPINGS, Phase[i].CLIPPINGS_TS);
+            count ++;
+        }
+    }
+
+
+
+
+
+
+
+
 
 
 
