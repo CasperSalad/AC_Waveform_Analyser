@@ -6,11 +6,15 @@
 #include <stdio.h>
 #include <math.h>
 #include "waveform.h"
-Calculations RMS(Sample *data, int n) {
 
-    Phase[0].name = "a";
-    Phase[1].name = "b";
-    Phase[2].name = "c";
+
+double THD_Average = 0;
+double Pfactor_Average = 0;
+double Frequency_Average = 0;
+
+Calculations *RMS (Sample *data, int n) {
+
+
 
     double Va_SUM;
     double Vb_SUM;
@@ -34,12 +38,12 @@ Calculations RMS(Sample *data, int n) {
     Phase[1].MEAN = Vb_SUM /n;
     Phase[2].MEAN = Vc_SUM /n;
     Phase[0].RMS = sqrt(Va_SUM2 /n);
-    Phase[1.RMS = sqrt(Vb_SUM2 /n);
+    Phase[1].RMS = sqrt(Vb_SUM2 /n);
     Phase[2].RMS = sqrt(Vc_SUM2 /n);
 
 }
 
-Calculations RMS_Compliance(double nominal, double RMS) {
+Calculations *RMS_Compliance (double nominal, double RMS) {
 
     double upper = RMS + RMS * (nominal/100);
     double lower = RMS - RMS * (nominal/100);
@@ -54,7 +58,7 @@ Calculations RMS_Compliance(double nominal, double RMS) {
 
 }
 
-Calculations Peak2Peak(Sample *data, int n) {
+Calculations *Peak2Peak (Sample *data, int n) {
 
     double Va_MAX;
     double Va_MIN;
@@ -79,7 +83,7 @@ Calculations Peak2Peak(Sample *data, int n) {
 
 }
 
-Calculations Clippings(Sample *data, int n, double limit) {
+Calculations *Clippings (Sample *data, int n, double limit) {
     int count;
     for (int i = 0; i < n; i++) {
         if (data[i].Va >= limit) {
@@ -103,7 +107,7 @@ Calculations Clippings(Sample *data, int n, double limit) {
     }
 }
 
-Sample *THD_Percent (Sample *data, int n) {
+void THD_Percent (Sample *data, int n) {
 
     double THD_SUM;
     for (int i = 0; i < n; i++) {
@@ -113,7 +117,7 @@ Sample *THD_Percent (Sample *data, int n) {
 
 
 }
-Sample *Power_Factor (Sample *data, int n) {
+void Power_Factor (Sample *data, int n) {
 
     double Pfactor_SUM;
     for (int i = 0; i < n; i++) {
@@ -123,7 +127,7 @@ Sample *Power_Factor (Sample *data, int n) {
 
 
 }
-Sample *Frequency (Sample *data, int n) {
+void Frequency (Sample *data, int n) {
 
     double Frequency_SUM;
     for (int i = 0; i < n; i++) {

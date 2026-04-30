@@ -3,11 +3,8 @@
 #include <math.h>
 #include "IO.h"
 #include "waveform.h"
+#include "Common.h"
 int main() {
-
-    Phase[0].RMS_Status = 1;
-    Phase[1].RMS_Status = 1;
-    Phase[2].RMS_Status = 1;
 
     char FileName[50];
 
@@ -15,6 +12,7 @@ int main() {
     scanf("%s", FileName);
 
 Sample *data = COLLECT(FileName);
+    printf("1");
 
 if (data != NULL) {
 
@@ -25,6 +23,8 @@ if (data != NULL) {
     THD_Percent(data,  1000);
     Power_Factor(data,  1000);
     Frequency(data,  1000);
+    printf("%lf", Phase[1].RMS);
+    RESULTS(Phase);
 
 } else {
     printf("\nFAILED");

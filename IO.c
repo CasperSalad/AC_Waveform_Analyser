@@ -4,14 +4,23 @@
 #include <string.h>
 #include <stdlib.h>
 #include <stdio.h>
-#include "waveform.h"
-Sample *COLLECT(char *CSVFILE) {
+#include "IO.h"
+
+char FileName[50];
+
+Calculations Phase[3] = {
+        {'a', 1},
+        {'b', 1},
+        {'c', 1}
+};
+
+Sample *COLLECT(char *FileName) {
 
     //Variables
     char line [1000];
     int count = 0;
 
-    FILE *fptr = fopen(CSVFILE, "r");
+    FILE *fptr = fopen(FileName, "r");
 
     if (fptr == NULL) {
         printf("The file could not be opened");
@@ -27,7 +36,7 @@ Sample *COLLECT(char *CSVFILE) {
 
     fgets(line, 100, fptr);
 
-    printf("1\n");
+
     while (count <= 999) {
 
         fgets(line, 100, fptr );
@@ -46,49 +55,45 @@ Sample *COLLECT(char *CSVFILE) {
     }
 
     fclose(fptr);
-    return data;
+    printf("1\n");
 }
 
-void RESULTS(char *File_Name, phase[3])  {
+void RESULTS(Calculations *Phase)  {
 
     int count = 0;
 
     FILE *fptr = fopen("results.txt", "w");
+    printf("2");
 
     if (fptr == NULL) {
         printf("Unable to create Results File");
         return;
     }
-    fprintf("           3 Phase AC waveform Analysis Program - Casper Lamptey"\n);
-    fprintf("------------------------------------------------------------------------------\n");
+
+    fprintf(fptr,"           3 Phase AC waveform Analysis Program - Casper Lamptey\n");
+    fprintf(fptr, "------------------------------------------------------------------------------\n");
     for (int i = 0; i < 3; i++) {
 
-        fprintf("Calculations for V%c\n", Phase[i].name);
-        fprintf("RMS : %lf      ", Phase[i].name);
+        fprintf(fptr, "Calculations for V%c\n", Phase[i].name);
+        fprintf(fptr, "RMS : %lf      ", Phase[i].name);
 
-        if (Phase[i].RMS_Status == 0) fprintf("RMS is below the nominal interval.\n");
-        if (Phase[i].RMS_Status == 1) fprintf("RMS is within the nominal interval.\n");
-        if (Phase[i].RMS_Status == 2) fprintf("RMS is above the nominal interval.\n");
+        if (Phase[i].RMS_Status == 0) fprintf(fptr, "RMS is below the nominal interval.\n");
+        if (Phase[i].RMS_Status == 1) fprintf(fptr, "RMS is within the nominal interval.\n");
+        if (Phase[i].RMS_Status == 2) fprintf(fptr, "RMS is above the nominal interval.\n");
 
-        fprintf("Peak to Peak Value : %lf\n", Phase[i].PEAK2PEAK);
+        fprintf(fptr, "Peak to Peak Value : %lf\n", Phase[i].PEAK2PEAK);
 
 
-        fprintf("V%c Voltage Clippings list:\n\n ")
+        fprintf(fptr, "V%c Voltage Clippings list:\n\n ");
 
         while (Phase[i].CLIPPINGS != 0) {
-            fprintf("%lf     ------->      %lf\n", Phase[i].CLIPPINGS, Phase[i].CLIPPINGS_TS);
+            fprintf(fptr, "%lf     ------->      %lf\n", Phase[i].CLIPPINGS, Phase[i].CLIPPINGS_TS);
             count ++;
         }
     }
+    fprintf(fptr, "THD average : %lf\n", THD_Average);
+    fprintf(fptr, "Power Factor Average : %lf\n", Pfactor_Average);
+    fprintf(fptr, "Frequency Average : %lf\n", Frequency_Average);
 
-
-
-
-
-
-
-
-
-
-
+    fclose(fptr);
 }
