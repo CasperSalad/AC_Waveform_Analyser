@@ -9,6 +9,8 @@ extern double THD_Average;
 extern double Pfactor_Average;
 extern double Frequency_Average;
 
+extern int CLIP_COUNT [3];
+
 
 typedef struct {
     double timestamp;
@@ -25,11 +27,11 @@ typedef struct {
 
     char name;
     int RMS_Status;
+    double CLIPPINGS [20];
     double MEAN;
     double RMS;
     double PEAK2PEAK;
     double CLIPPINGS_TS[20];
-    double CLIPPINGS [20];
 
 } Calculations;
 

@@ -1,19 +1,10 @@
 //
 // Created by clt2-lamptey on 21/04/2026.
 //
-#include <string.h>
+
 #include <stdlib.h>
 #include <stdio.h>
 #include "IO.h"
-
-char FileName[50];
-
-Calculations Phase[3] = {
-        {'a', 1},
-        {'b', 1},
-        {'c', 1}
-};
-
 Sample *COLLECT(char *FileName) {
 
     //Variables
@@ -34,14 +25,14 @@ Sample *COLLECT(char *FileName) {
         return NULL;
     }
 
-    fgets(line, 100, fptr);
+    fgets(line, 1000, fptr);
 
+    while (count < 1000) {
 
-    while (count <= 999) {
+        if (fgets(line, 1000, fptr) == NULL)
+            break;
 
-        fgets(line, 100, fptr );
-
-        sscanf(line, "%lf, %lf, %lf, %lf, %lf, %lf, %lf, %lf",
+        sscanf(line, "%lf,%lf,%lf,%lf,%lf,%lf,%lf,%lf",
         &data[count].timestamp,
         &data[count].Va,
         &data[count].Vb,
@@ -55,7 +46,8 @@ Sample *COLLECT(char *FileName) {
     }
 
     fclose(fptr);
-    printf("1\n");
+
+    return data;
 }
 
 void RESULTS(Calculations *Phase)  {
@@ -75,25 +67,26 @@ void RESULTS(Calculations *Phase)  {
     for (int i = 0; i < 3; i++) {
 
         fprintf(fptr, "Calculations for V%c\n", Phase[i].name);
-        fprintf(fptr, "RMS : %lf      ", Phase[i].name);
+        fprintf(fptr, "RMS : %.12lf      ", Phase[i].RMS);
 
         if (Phase[i].RMS_Status == 0) fprintf(fptr, "RMS is below the nominal interval.\n");
         if (Phase[i].RMS_Status == 1) fprintf(fptr, "RMS is within the nominal interval.\n");
         if (Phase[i].RMS_Status == 2) fprintf(fptr, "RMS is above the nominal interval.\n");
 
-        fprintf(fptr, "Peak to Peak Value : %lf\n", Phase[i].PEAK2PEAK);
+        fprintf(fptr, "Peak to Peak Value : %.12lf\n", Phase[i].PEAK2PEAK);
+        fprintf(fptr, "V%c Voltage Clippings list:\n\n", Phase[i].name);
 
-
-        fprintf(fptr, "V%c Voltage Clippings list:\n\n ");
-
-        while (Phase[i].CLIPPINGS != 0) {
-            fprintf(fptr, "%lf     ------->      %lf\n", Phase[i].CLIPPINGS, Phase[i].CLIPPINGS_TS);
-            count ++;
+        for (int n = 0; n == CLIP_COUNT[i] - 1; n ++) {
+            fprintf(fptr, "%.12lf     ------->      %.12lf\n", Phase[i].CLIPPINGS[n], Phase[i].CLIPPINGS_TS[n]);
         }
-    }
-    fprintf(fptr, "THD average : %lf\n", THD_Average);
-    fprintf(fptr, "Power Factor Average : %lf\n", Pfactor_Average);
-    fprintf(fptr, "Frequency Average : %lf\n", Frequency_Average);
 
+        fprintf(fptr, "Number of Clipping in Phase: %d\n", count);
+        count = 0;
+    }
+
+    fprintf(fptr, "THD average : %.12lf\n", THD_Average);
+    fprintf(fptr, "Power Factor Average : %.12lf\n", Pfactor_Average);
+    fprintf(fptr, "Frequency Average : %.12lf\n", Frequency_Average);
     fclose(fptr);
+    printf("1");
 }

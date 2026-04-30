@@ -1,12 +1,10 @@
 //
 // Created by clt2-lamptey on 21/04/2026.
 //
-#include <string.h>
-#include <stdlib.h>
-#include <stdio.h>
 #include <math.h>
 #include "waveform.h"
 
+int CLIP_COUNT [3];
 
 double THD_Average = 0;
 double Pfactor_Average = 0;
@@ -23,7 +21,7 @@ Calculations *RMS (Sample *data, int n) {
     double Va_SUM2;
     double Vb_SUM2;
     double Vc_SUM2;
-    int count;
+
     for (int i = 0; i < n; i++) {
         Va_SUM = Va_SUM + data[i]. Va;
         Vb_SUM = Vb_SUM + data[i]. Vb;
@@ -44,6 +42,12 @@ Calculations *RMS (Sample *data, int n) {
 }
 
 Calculations *RMS_Compliance (double nominal, double RMS) {
+
+    Calculations Phase[3] = {
+            {'a', 1},
+            {'b', 1},
+            {'c', 1}
+    };
 
     double upper = RMS + RMS * (nominal/100);
     double lower = RMS - RMS * (nominal/100);
@@ -84,26 +88,29 @@ Calculations *Peak2Peak (Sample *data, int n) {
 }
 
 Calculations *Clippings (Sample *data, int n, double limit) {
-    int count;
+
     for (int i = 0; i < n; i++) {
         if (data[i].Va >= limit) {
 
-            Phase[0].CLIPPINGS_TS[count] = data[i].timestamp;
-            Phase[0].CLIPPINGS[count] = data[i].Va;
-            count++;
+            Phase[0].CLIPPINGS_TS[CLIP_COUNT[0]] = data[i].timestamp;
+            Phase[0].CLIPPINGS[CLIP_COUNT[0]] = data[i].Va;
+            CLIP_COUNT[0]++;
         }
         if (data[i].Vb >= limit) {
 
-            Phase[1].CLIPPINGS_TS[count] = data[i].timestamp;
-            Phase[1].CLIPPINGS[count] = data[i].Vb;
-            count++;
+            Phase[1].CLIPPINGS_TS[CLIP_COUNT[1]] = data[i].timestamp;
+            Phase[1].CLIPPINGS[CLIP_COUNT[1]] = data[i].Vb;
+
+            CLIP_COUNT[1]++;
         }
         if (data[i].Vc >= limit) {
 
-            Phase[2].CLIPPINGS_TS[count] = data[i].timestamp;
-            Phase[2].CLIPPINGS[count] = data[i].Vc;
-            count++;
+            Phase[2].CLIPPINGS_TS[CLIP_COUNT[2]] = data[i].timestamp;
+            Phase[2].CLIPPINGS[CLIP_COUNT[2]] = data[i].Vc;
+
+            CLIP_COUNT[2]++;
         }
+
     }
 }
 

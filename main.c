@@ -1,6 +1,5 @@
  #include <stdio.h>
 #include <stdlib.h>
-#include <math.h>
 #include "IO.h"
 #include "waveform.h"
 #include "Common.h"
@@ -11,10 +10,7 @@ int main() {
     printf("3 phase AC Waveform Power Analyser by Casper Lamptey\n\nEnter File Name:");
     scanf("%s", FileName);
 
-Sample *data = COLLECT(FileName);
-    printf("1");
-
-if (data != NULL) {
+    Sample *data = COLLECT(FileName);
 
     RMS(data, 1000);
     RMS_Compliance(10, 230);
@@ -23,11 +19,9 @@ if (data != NULL) {
     THD_Percent(data,  1000);
     Power_Factor(data,  1000);
     Frequency(data,  1000);
-    printf("%lf", Phase[1].RMS);
     RESULTS(Phase);
 
-} else {
-    printf("\nFAILED");
-}
+
+    free(data);
     return 0;
 }
