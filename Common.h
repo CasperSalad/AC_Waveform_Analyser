@@ -35,5 +35,5 @@ typedef struct {
 
 } Calculations;
 
-extern Calculations Phase[3];
+
 #endif //WAVEFORM_ANALYSER_CODE_COMMON_H

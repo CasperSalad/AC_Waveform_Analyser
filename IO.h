@@ -6,7 +6,7 @@
 #define WAVEFORM_ANALYSER_CODE_IO_H
 
 
-Sample* COLLECT(char *FileName);
+Sample* COLLECT(char *CSVFILE);
 void RESULTS(Calculations *Phase);
 
 #endif //WAVEFORM_ANALYSER_CODE_IO_H

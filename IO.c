@@ -5,13 +5,14 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include "IO.h"
-Sample *COLLECT(char *FileName) {
+#include "waveform.h"
+Sample *COLLECT(char *CSVFILE) {
 
     //Variables
     char line [1000];
     int count = 0;
 
-    FILE *fptr = fopen(FileName, "r");
+    FILE *fptr = fopen(CSVFILE, "r");
 
     if (fptr == NULL) {
         printf("The file could not be opened");
@@ -50,7 +51,7 @@ Sample *COLLECT(char *FileName) {
     return data;
 }
 
-void RESULTS(Calculations *Phase)  {
+void RESULTS(Calculations Phase[3])  {
 
     int count = 0;
 
@@ -76,11 +77,11 @@ void RESULTS(Calculations *Phase)  {
         fprintf(fptr, "Peak to Peak Value : %.12lf\n", Phase[i].PEAK2PEAK);
         fprintf(fptr, "V%c Voltage Clippings list:\n\n", Phase[i].name);
 
-        for (int n = 0; n == CLIP_COUNT[i] - 1; n ++) {
+        for (int n = 0; n < CLIP_COUNT[i]; n ++) {
             fprintf(fptr, "%.12lf     ------->      %.12lf\n", Phase[i].CLIPPINGS[n], Phase[i].CLIPPINGS_TS[n]);
         }
 
-        fprintf(fptr, "Number of Clipping in Phase: %d\n", count);
+        fprintf(fptr, "Number of Clipping in Phase: %d\n", CLIP_COUNT[i]);
         count = 0;
     }
 
@@ -88,5 +89,8 @@ void RESULTS(Calculations *Phase)  {
     fprintf(fptr, "Power Factor Average : %.12lf\n", Pfactor_Average);
     fprintf(fptr, "Frequency Average : %.12lf\n", Frequency_Average);
     fclose(fptr);
-    printf("1");
+    printf("\n1");
 }
+
+
+

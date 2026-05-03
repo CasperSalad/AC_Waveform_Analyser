@@ -7,10 +7,10 @@
 #include "Common.h"
 
 
-Calculations *RMS(Sample *data, int n);
-Calculations *RMS_Compliance(double nominal, double RMS);
-Calculations *Peak2Peak(Sample *data, int n);
-Calculations *Clippings(Sample *data, int n, double limit);
+void RMS(Sample *data, int n, Calculations *Phase);
+void RMS_Compliance(double nominal, double RMS, Calculations *Phase);
+void Peak2Peak(Sample *data, int n, Calculations *Phase);
+void Clippings(Sample *data, int n, double limit, Calculations *Phase);
 void THD_Percent (Sample *data, int n);
 void Power_Factor (Sample *data, int n);
 void Frequency (Sample *data, int n);

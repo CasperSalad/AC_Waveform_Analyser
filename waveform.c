@@ -10,7 +10,7 @@ double THD_Average = 0;
 double Pfactor_Average = 0;
 double Frequency_Average = 0;
 
-Calculations *RMS (Sample *data, int n) {
+void RMS (Sample *data, int n, Calculations Phase[3]) {
 
 
 
@@ -41,13 +41,8 @@ Calculations *RMS (Sample *data, int n) {
 
 }
 
-Calculations *RMS_Compliance (double nominal, double RMS) {
+void RMS_Compliance (double nominal, double RMS, Calculations Phase[3]) {
 
-    Calculations Phase[3] = {
-            {'a', 1},
-            {'b', 1},
-            {'c', 1}
-    };
 
     double upper = RMS + RMS * (nominal/100);
     double lower = RMS - RMS * (nominal/100);
@@ -62,7 +57,7 @@ Calculations *RMS_Compliance (double nominal, double RMS) {
 
 }
 
-Calculations *Peak2Peak (Sample *data, int n) {
+void Peak2Peak (Sample *data, int n, Calculations Phase[3]) {
 
     double Va_MAX;
     double Va_MIN;
@@ -87,7 +82,7 @@ Calculations *Peak2Peak (Sample *data, int n) {
 
 }
 
-Calculations *Clippings (Sample *data, int n, double limit) {
+void Clippings (Sample *data, int n, double limit, Calculations Phase[3]) {
 
     for (int i = 0; i < n; i++) {
         if (data[i].Va >= limit) {
@@ -128,7 +123,7 @@ void Power_Factor (Sample *data, int n) {
 
     double Pfactor_SUM;
     for (int i = 0; i < n; i++) {
-        Pfactor_SUM = Pfactor_SUM + data[i].THD;
+        Pfactor_SUM = Pfactor_SUM + data[i].pFactor;
     }
     Pfactor_Average = Pfactor_SUM / n;
 
@@ -138,7 +133,7 @@ void Frequency (Sample *data, int n) {
 
     double Frequency_SUM;
     for (int i = 0; i < n; i++) {
-        Frequency_SUM = Frequency_SUM + data[i].THD;
+        Frequency_SUM = Frequency_SUM + data[i].frequency;
     }
     Frequency_Average = Frequency_SUM / n;
 
