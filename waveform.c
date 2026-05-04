@@ -14,13 +14,13 @@ void RMS (Sample *data, int n, Calculations Phase[3]) {
 
 
 
-    double Va_SUM;
-    double Vb_SUM;
-    double Vc_SUM;
+    double Va_SUM = 0;
+    double Vb_SUM = 0;
+    double Vc_SUM = 0;
 
-    double Va_SUM2;
-    double Vb_SUM2;
-    double Vc_SUM2;
+    double Va_SUM2 = 0;
+    double Vb_SUM2 = 0;
+    double Vc_SUM2 = 0;
 
     for (int i = 0; i < n; i++) {
         Va_SUM = Va_SUM + data[i]. Va;
@@ -85,20 +85,20 @@ void Peak2Peak (Sample *data, int n, Calculations Phase[3]) {
 void Clippings (Sample *data, int n, double limit, Calculations Phase[3]) {
 
     for (int i = 0; i < n; i++) {
-        if (data[i].Va >= limit) {
+        if (-limit >= data[i].Va || data[i].Va >= limit) {
 
             Phase[0].CLIPPINGS_TS[CLIP_COUNT[0]] = data[i].timestamp;
             Phase[0].CLIPPINGS[CLIP_COUNT[0]] = data[i].Va;
             CLIP_COUNT[0]++;
         }
-        if (data[i].Vb >= limit) {
+        if (-limit >= data[i].Vb || data[i].Va >= limit) {
 
             Phase[1].CLIPPINGS_TS[CLIP_COUNT[1]] = data[i].timestamp;
             Phase[1].CLIPPINGS[CLIP_COUNT[1]] = data[i].Vb;
 
             CLIP_COUNT[1]++;
         }
-        if (data[i].Vc >= limit) {
+        if (-limit >= data[i].Vc || data[i].Va >= limit) {
 
             Phase[2].CLIPPINGS_TS[CLIP_COUNT[2]] = data[i].timestamp;
             Phase[2].CLIPPINGS[CLIP_COUNT[2]] = data[i].Vc;
@@ -111,7 +111,7 @@ void Clippings (Sample *data, int n, double limit, Calculations Phase[3]) {
 
 void THD_Percent (Sample *data, int n) {
 
-    double THD_SUM;
+    double THD_SUM = 0;
     for (int i = 0; i < n; i++) {
         THD_SUM = THD_SUM + data[i].THD;
     }
@@ -121,7 +121,7 @@ void THD_Percent (Sample *data, int n) {
 }
 void Power_Factor (Sample *data, int n) {
 
-    double Pfactor_SUM;
+    double Pfactor_SUM = 0;
     for (int i = 0; i < n; i++) {
         Pfactor_SUM = Pfactor_SUM + data[i].pFactor;
     }
@@ -131,7 +131,7 @@ void Power_Factor (Sample *data, int n) {
 }
 void Frequency (Sample *data, int n) {
 
-    double Frequency_SUM;
+    double Frequency_SUM = 0;
     for (int i = 0; i < n; i++) {
         Frequency_SUM = Frequency_SUM + data[i].frequency;
     }

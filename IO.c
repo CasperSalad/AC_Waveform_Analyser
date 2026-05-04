@@ -64,24 +64,25 @@ void RESULTS(Calculations Phase[3])  {
     }
 
     fprintf(fptr,"           3 Phase AC waveform Analysis Program - Casper Lamptey\n");
-    fprintf(fptr, "------------------------------------------------------------------------------\n");
+    fprintf(fptr, "------------------------------------------------------------------------------\n\n");
     for (int i = 0; i < 3; i++) {
 
-        fprintf(fptr, "Calculations for V%c\n", Phase[i].name);
-        fprintf(fptr, "RMS : %.12lf      ", Phase[i].RMS);
+        fprintf(fptr, "Calculations for V%c :\n------------------------------------\n\n", Phase[i].name);
+        fprintf(fptr, "RMS : %.12lf\n\n", Phase[i].RMS);
 
-        if (Phase[i].RMS_Status == 0) fprintf(fptr, "RMS is below the nominal interval.\n");
-        if (Phase[i].RMS_Status == 1) fprintf(fptr, "RMS is within the nominal interval.\n");
-        if (Phase[i].RMS_Status == 2) fprintf(fptr, "RMS is above the nominal interval.\n");
+        if (Phase[i].RMS_Status == 0) fprintf(fptr, "RMS is below the nominal interval.\n\n");
+        if (Phase[i].RMS_Status == 1) fprintf(fptr, "RMS is within the nominal interval.\n\n");
+        if (Phase[i].RMS_Status == 2) fprintf(fptr, "RMS is above the nominal interval.\n\n");
 
-        fprintf(fptr, "Peak to Peak Value : %.12lf\n", Phase[i].PEAK2PEAK);
+        fprintf(fptr, "DC Offset : %.12lf\n", Phase[i].MEAN);
+        fprintf(fptr, "Peak to Peak Value : %.12lf\n\n", Phase[i].PEAK2PEAK);
         fprintf(fptr, "V%c Voltage Clippings list:\n\n", Phase[i].name);
 
         for (int n = 0; n < CLIP_COUNT[i]; n ++) {
             fprintf(fptr, "%.12lf     ------->      %.12lf\n", Phase[i].CLIPPINGS[n], Phase[i].CLIPPINGS_TS[n]);
         }
 
-        fprintf(fptr, "Number of Clipping in Phase: %d\n", CLIP_COUNT[i]);
+        fprintf(fptr, "Number of Clipping in Phase: %d\n\n", CLIP_COUNT[i]);
         count = 0;
     }
 
@@ -89,7 +90,7 @@ void RESULTS(Calculations Phase[3])  {
     fprintf(fptr, "Power Factor Average : %.12lf\n", Pfactor_Average);
     fprintf(fptr, "Frequency Average : %.12lf\n", Frequency_Average);
     fclose(fptr);
-    printf("\n1");
+
 }
 
 
