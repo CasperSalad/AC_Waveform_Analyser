@@ -32,7 +32,8 @@ Sample *COLLECT(char *CSVFILE) {
 
     while (count < 1000) {
 
-        fgets(line, 1000, fptr);
+        if (fgets(line, 1000, fptr) == NULL) exit(1);
+
 
         sscanf(line, "%lf,%lf,%lf,%lf,%lf,%lf,%lf,%lf",
         &data[count].timestamp,
