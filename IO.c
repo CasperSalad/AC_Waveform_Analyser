@@ -76,11 +76,11 @@ void RESULTS(Calculations Phase[3])  {
         fprintf(fptr, "Peak to Peak Value : %.12lf\n\n", Phase[i].PEAK2PEAK);
         fprintf(fptr, "V%c Voltage Clippings list:\n\n", Phase[i].name);
 
-        for (int n = 0; n < CLIP_COUNT[i]; n ++) {
+        for (int n = 0; n < Phase[i].CLIP_COUNT[i]; n ++) {
             fprintf(fptr, "%.12lf     ------->      %.12lf\n", Phase[i].CLIPPINGS[n], Phase[i].CLIPPINGS_TS[n]);
         }
 
-        fprintf(fptr, "Number of Clipping in Phase: %d\n\n", CLIP_COUNT[i]);
+        fprintf(fptr, "Number of Clipping in Phase: %d\n\n", Phase[i].CLIP_COUNT[i]);
     }
 
     fprintf(fptr, "THD average : %.12lf\n", THD_Average);

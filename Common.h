@@ -8,8 +8,6 @@
 extern double THD_Average;
 extern double Pfactor_Average;
 extern double Frequency_Average;
-//Integer to store the amount of clippings per phase:
-extern int CLIP_COUNT [3];
 
 //Structure for each sample, size 64 bytes:
 typedef struct {
@@ -33,6 +31,7 @@ typedef struct {
     double RMS;
     double PEAK2PEAK;
     double CLIPPINGS_TS[20]; //Clippings array for timestamp of each clipping
+    int CLIP_COUNT [3];   //Integer to store the amount of clippings per phase:
 
 } Calculations;
 

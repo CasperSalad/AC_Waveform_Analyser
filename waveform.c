@@ -13,7 +13,7 @@ double Frequency_Average = 0;
 void RMS (Sample *data, int n, Calculations Phase[3]) {
 
 
-// Variables for the sum and sum of squars for all voltages:
+// Variables for the sum and sum of squares for all voltages:
     double Va_SUM = 0;
     double Vb_SUM = 0;
     double Vc_SUM = 0;
@@ -83,23 +83,24 @@ void Clippings (Sample *data, int n, double limit, Calculations Phase[3]) {
     for (int i = 0; i < n; i++) {
         if (-limit >= data[i].Va || data[i].Va >= limit) {
 
-            Phase[0].CLIPPINGS_TS[CLIP_COUNT[0]] = data[i].timestamp;
-            Phase[0].CLIPPINGS[CLIP_COUNT[0]] = data[i].Va;
-            CLIP_COUNT[0]++;
+            Phase[0].CLIPPINGS_TS[Phase[0].CLIP_COUNT[0]] = data[i].timestamp;
+            Phase[0].CLIPPINGS[Phase[0].CLIP_COUNT[0]] = data[i].Va;
+
+            Phase[0].CLIP_COUNT[0]++;
         }
         if (-limit >= data[i].Vb || data[i].Vb >= limit) {
 
-            Phase[1].CLIPPINGS_TS[CLIP_COUNT[1]] = data[i].timestamp;
-            Phase[1].CLIPPINGS[CLIP_COUNT[1]] = data[i].Vb;
+            Phase[1].CLIPPINGS_TS[Phase[1].CLIP_COUNT[1]] = data[i].timestamp;
+            Phase[1].CLIPPINGS[Phase[1].CLIP_COUNT[1]] = data[i].Vb;
 
-            CLIP_COUNT[1]++;
+            Phase[1].CLIP_COUNT[1]++;
         }
         if (-limit >= data[i].Vc || data[i].Vc >= limit) {
 
-            Phase[2].CLIPPINGS_TS[CLIP_COUNT[2]] = data[i].timestamp;
-            Phase[2].CLIPPINGS[CLIP_COUNT[2]] = data[i].Vc;
+            Phase[2].CLIPPINGS_TS[Phase[2].CLIP_COUNT[2]] = data[i].timestamp;
+            Phase[2].CLIPPINGS[Phase[2].CLIP_COUNT[2]] = data[i].Vc;
 
-            CLIP_COUNT[2]++;
+            Phase[2].CLIP_COUNT[2]++;
         }
 
     }
