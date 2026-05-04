@@ -5,8 +5,8 @@
 #ifndef WAVEFORM_ANALYSER_CODE_IO_H
 #define WAVEFORM_ANALYSER_CODE_IO_H
 
-
-Sample* COLLECT(char *CSVFILE);
+//IO file handling funtions:
+Sample* COLLECT(char *CSVFILE); //Reading values and storing into data array
 void RESULTS(Calculations *Phase);
 
 #endif //WAVEFORM_ANALYSER_CODE_IO_H

@@ -6,7 +6,7 @@
 #define WAVEFORM_ANALYSER_CODE_WAVEFORM_H
 #include "Common.h"
 
-
+//Waveform analysis functions:
 void RMS(Sample *data, int n, Calculations *Phase);
 void RMS_Compliance(double nominal, double RMS, Calculations *Phase);
 void Peak2Peak(Sample *data, int n, Calculations *Phase);

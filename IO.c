@@ -5,33 +5,34 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include "IO.h"
-#include "waveform.h"
 Sample *COLLECT(char *CSVFILE) {
 
-    //Variables
-    char line [1000];
+    // Local Variables:
+    char line [1000];      //Buffer for f(gets)
     int count = 0;
 
     FILE *fptr = fopen(CSVFILE, "r");
 
+    //error message if file is not opened, also ends entire program:
     if (fptr == NULL) {
-        printf("The file could not be opened");
-        return NULL;
+        printf("The file could not be opened, reason could include:\n-Incorrect file name\n-invalid or missing data");
+        exit(1);
     }
 
-    Sample* data = malloc(64000);
+    Sample* data = malloc(64000);   //Alocating memory to data array
+
+    //error message if not enough memory, also ends entire program:
     if (data == NULL) {
         printf("Not enough memory to analyse file");
         fclose(fptr);
-        return NULL;
+        exit(1);
     }
 
-    fgets(line, 1000, fptr);
+    fgets(line, 1000, fptr);            //parses header row
 
     while (count < 1000) {
 
-        if (fgets(line, 1000, fptr) == NULL)
-            break;
+        fgets(line, 1000, fptr);
 
         sscanf(line, "%lf,%lf,%lf,%lf,%lf,%lf,%lf,%lf",
         &data[count].timestamp,
@@ -53,14 +54,11 @@ Sample *COLLECT(char *CSVFILE) {
 
 void RESULTS(Calculations Phase[3])  {
 
-    int count = 0;
-
     FILE *fptr = fopen("results.txt", "w");
-    printf("2");
 
     if (fptr == NULL) {
         printf("Unable to create Results File");
-        return;
+        exit(1);
     }
 
     fprintf(fptr,"           3 Phase AC waveform Analysis Program - Casper Lamptey\n");
@@ -83,7 +81,6 @@ void RESULTS(Calculations Phase[3])  {
         }
 
         fprintf(fptr, "Number of Clipping in Phase: %d\n\n", CLIP_COUNT[i]);
-        count = 0;
     }
 
     fprintf(fptr, "THD average : %.12lf\n", THD_Average);

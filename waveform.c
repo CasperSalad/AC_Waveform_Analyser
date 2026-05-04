@@ -13,7 +13,7 @@ double Frequency_Average = 0;
 void RMS (Sample *data, int n, Calculations Phase[3]) {
 
 
-
+// Variables for the sum and sum of squars for all voltages:
     double Va_SUM = 0;
     double Vb_SUM = 0;
     double Vc_SUM = 0;
@@ -21,7 +21,7 @@ void RMS (Sample *data, int n, Calculations Phase[3]) {
     double Va_SUM2 = 0;
     double Vb_SUM2 = 0;
     double Vc_SUM2 = 0;
-
+// Calculating RMS and Mean (DC_Offset:
     for (int i = 0; i < n; i++) {
         Va_SUM = Va_SUM + data[i]. Va;
         Vb_SUM = Vb_SUM + data[i]. Vb;
@@ -43,22 +43,18 @@ void RMS (Sample *data, int n, Calculations Phase[3]) {
 
 void RMS_Compliance (double nominal, double RMS, Calculations Phase[3]) {
 
-
+// nominal = percentage that would give the range of nominal
     double upper = RMS + RMS * (nominal/100);
     double lower = RMS - RMS * (nominal/100);
-
-    if (Phase[0].RMS < lower) Phase[0].RMS_Status = 0;
-    if (Phase[1].RMS < lower) Phase[1].RMS_Status = 0;
-    if (Phase[2].RMS < lower) Phase[2].RMS_Status = 0;
-
-    if (Phase[0].RMS > upper) Phase[0].RMS_Status = 2;
-    if (Phase[1].RMS > upper) Phase[1].RMS_Status = 2;
-    if (Phase[2].RMS > upper) Phase[2].RMS_Status = 2;
+    for (int i = 0; i < 3; i++) {
+        if (Phase[i].RMS < lower) Phase[i].RMS_Status = 0;
+        if (Phase[i].RMS > upper) Phase[i].RMS_Status = 2;
+    }
 
 }
 
 void Peak2Peak (Sample *data, int n, Calculations Phase[3]) {
-
+// Variables for maximum and minimum values of all phase voltages:
     double Va_MAX;
     double Va_MIN;
     double Vb_MAX;
@@ -83,7 +79,7 @@ void Peak2Peak (Sample *data, int n, Calculations Phase[3]) {
 }
 
 void Clippings (Sample *data, int n, double limit, Calculations Phase[3]) {
-
+// Checking whether every value is within the interval -limit < x < limit:
     for (int i = 0; i < n; i++) {
         if (-limit >= data[i].Va || data[i].Va >= limit) {
 
@@ -91,14 +87,14 @@ void Clippings (Sample *data, int n, double limit, Calculations Phase[3]) {
             Phase[0].CLIPPINGS[CLIP_COUNT[0]] = data[i].Va;
             CLIP_COUNT[0]++;
         }
-        if (-limit >= data[i].Vb || data[i].Va >= limit) {
+        if (-limit >= data[i].Vb || data[i].Vb >= limit) {
 
             Phase[1].CLIPPINGS_TS[CLIP_COUNT[1]] = data[i].timestamp;
             Phase[1].CLIPPINGS[CLIP_COUNT[1]] = data[i].Vb;
 
             CLIP_COUNT[1]++;
         }
-        if (-limit >= data[i].Vc || data[i].Va >= limit) {
+        if (-limit >= data[i].Vc || data[i].Vc >= limit) {
 
             Phase[2].CLIPPINGS_TS[CLIP_COUNT[2]] = data[i].timestamp;
             Phase[2].CLIPPINGS[CLIP_COUNT[2]] = data[i].Vc;
@@ -110,7 +106,7 @@ void Clippings (Sample *data, int n, double limit, Calculations Phase[3]) {
 }
 
 void THD_Percent (Sample *data, int n) {
-
+//Calculating Average THD
     double THD_SUM = 0;
     for (int i = 0; i < n; i++) {
         THD_SUM = THD_SUM + data[i].THD;
@@ -120,7 +116,7 @@ void THD_Percent (Sample *data, int n) {
 
 }
 void Power_Factor (Sample *data, int n) {
-
+//Calculating Average Power Factor
     double Pfactor_SUM = 0;
     for (int i = 0; i < n; i++) {
         Pfactor_SUM = Pfactor_SUM + data[i].pFactor;
@@ -130,7 +126,7 @@ void Power_Factor (Sample *data, int n) {
 
 }
 void Frequency (Sample *data, int n) {
-
+//Calculating Average Frequency
     double Frequency_SUM = 0;
     for (int i = 0; i < n; i++) {
         Frequency_SUM = Frequency_SUM + data[i].frequency;

@@ -18,16 +18,6 @@ int main() {
 
     Sample *data = COLLECT(FileName);
 
-    printf("\ntime : %.12lf", data[0].timestamp);
-    printf("\nVa : %.12lf", data[0].Va);
-    printf("\nVb : %.12lf", data[0].Vb);
-    printf("\nVc : %.12lf", data[0].Vc);
-    printf("\ncurrent : %.12lf", data[0].current);
-    printf("\nf : %.12lf", data[0].frequency);
-    printf("\np : %.12lf", data[0].pFactor);
-    printf("\nTHD : %.12lf", data[0].THD);
-
-
         RMS(data, 1000, Phase);
         printf("\nRMS complete");
         RMS_Compliance(10, 230, Phase);
@@ -38,14 +28,15 @@ int main() {
         printf("\nCLIPPINGS complete");
 
 
-    printf("\nRMS : %.12lf ", Phase[0].RMS);
-    printf("\np2p : %.12lf ", Phase[0].PEAK2PEAK);
-
     THD_Percent(data, 1000);
+    printf("\nTHD Average complete");
     Power_Factor(data, 1000);
+    printf("\nPfactor Average complete");
     Frequency(data, 1000);
-    RESULTS(Phase);
+    printf("\nFrequency Average complete");
 
+    RESULTS(Phase);
+    printf("\nResults file creation complete");
 
     free(data);
     return 0;
